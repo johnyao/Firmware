@@ -46,8 +46,8 @@ set(config_module_list
 	drivers/pwm_input
 	drivers/camera_trigger
 	drivers/bst
-	drivers/snapdragon_rc_pwm
-	drivers/lis3mdl
+  #drivers/snapdragon_rc_pwm
+	#drivers/lis3mdl
 
 	#
 	# System commands
@@ -98,18 +98,18 @@ set(config_module_list
 	#
 	modules/attitude_estimator_q
 	#modules/ekf_att_pos_estimator
-	modules/position_estimator_inav
+  #modules/position_estimator_inav
 	modules/local_position_estimator
-	modules/ekf2
+  #modules/ekf2
 
 	#
 	# Vehicle Control
 	#
-	modules/fw_pos_control_l1
-	modules/fw_att_control
+  #modules/fw_pos_control_l1
+	#modules/fw_att_control
 	modules/mc_att_control
 	modules/mc_pos_control
-	modules/vtol_att_control
+  #modules/vtol_att_control
 
 	#
 	# Logging
@@ -145,7 +145,7 @@ set(config_module_list
 	platforms/nuttx
 
 	# had to add for cmake, not sure why wasn't in original config
-	platforms/common 
+	platforms/common
 	platforms/nuttx/px4_layer
 
 	#

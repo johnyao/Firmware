@@ -44,11 +44,11 @@ set(config_module_list
 	drivers/pwm_input
 	drivers/camera_trigger
 	drivers/bst
-	drivers/snapdragon_rc_pwm
-	drivers/lis3mdl
+  #drivers/snapdragon_rc_pwm
+  #drivers/lis3mdl
 	drivers/bmp280
 	drivers/bma180
-	drivers/bmi160
+  #drivers/bmi160
 	drivers/tap_esc
 
 	#
@@ -98,8 +98,8 @@ set(config_module_list
 	# Estimation modules (EKF/ SO3 / other filters)
 	#
 	modules/attitude_estimator_q
-	modules/ekf_att_pos_estimator
-	modules/position_estimator_inav
+  #modules/ekf_att_pos_estimator
+  #modules/position_estimator_inav
 	modules/ekf2
 	modules/local_position_estimator
 
@@ -107,11 +107,11 @@ set(config_module_list
 	# Vehicle Control
 	#
 	# modules/segway # XXX Needs GCC 4.7 fix
-	modules/fw_pos_control_l1
-	modules/fw_att_control
+  #modules/fw_pos_control_l1
+  #modules/fw_att_control
 	modules/mc_att_control
 	modules/mc_pos_control
-	modules/vtol_att_control
+  #modules/vtol_att_control
 
 	#
 	# Logging
