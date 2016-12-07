@@ -52,9 +52,6 @@ void CMUMavlink::handle_message(const mavlink_message_t *msg)
     case MAVLINK_MSG_ID_MOCAP_TIMESYNC:
       handle_message_mocap_timesync(msg);
       break;
-    case MAVLINK_MSG_ID_MOCAP_MULTI_POSE:
-      handle_message_mocap_multi_pose(msg);
-      break;
     case MAVLINK_MSG_ID_MOCAP_POSITION_CMD:
       handle_message_mocap_position_cmd(msg);
       break;
