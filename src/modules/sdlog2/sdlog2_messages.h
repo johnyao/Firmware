@@ -625,6 +625,13 @@ struct log_LOAD_s {
 	float cpu_load;
 };
 
+/* --- RPMC - MOCAP_RPM_COMMAND --- */
+#define LOG_RPMC_MSG 62
+struct log_RPMC_s {
+	uint8_t ninputs;
+	uint16_t input[8];
+};
+
 /********** SYSTEM MESSAGES, ID > 0x80 **********/
 
 /* --- TIME - TIME STAMP --- */
@@ -714,6 +721,7 @@ static const struct log_format_s log_formats[] = {
 	LOG_FORMAT(RPL6, "Qff", "Tasp,inAsp,trAsp"),
 	LOG_FORMAT(LAND, "B", "Landed"),
 	LOG_FORMAT(LOAD, "f", "CPU"),
+  LOG_FORMAT(RPMC, "BHHHHHHHH", "ninputs,w0,w1,w2,w3,w4,w5,w6,w7"),
 	/* system-level messages, ID >= 0x80 */
 	/* FMT: don't write format of format message, it's useless */
 	LOG_FORMAT(TIME, "Q", "StartTime"),

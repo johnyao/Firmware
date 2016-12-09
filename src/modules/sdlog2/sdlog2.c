@@ -111,6 +111,7 @@
 #include <uORB/topics/vehicle_land_detected.h>
 #include <uORB/topics/commander_state.h>
 #include <uORB/topics/cpuload.h>
+#include <uORB/topics/mocap_rpm_command.h>
 
 #include <systemlib/systemlib.h>
 #include <systemlib/param/param.h>
@@ -1218,6 +1219,7 @@ int sdlog2_thread_main(int argc, char *argv[])
 		struct vehicle_land_detected_s land_detected;
 		struct cpuload_s cpuload;
 		struct vehicle_gps_position_s dual_gps_pos;
+    struct mocap_rpm_command_s mocap_rpm_command;
 	} buf;
 
 	memset(&buf, 0, sizeof(buf));
@@ -1279,6 +1281,7 @@ int sdlog2_thread_main(int argc, char *argv[])
 			struct log_LAND_s log_LAND;
 			struct log_RPL6_s log_RPL6;
 			struct log_LOAD_s log_LOAD;
+      struct log_RPMC_s log_RPMC;
 		} body;
 	} log_msg = {
 		LOG_PACKET_HEADER_INIT(0)
@@ -1328,6 +1331,7 @@ int sdlog2_thread_main(int argc, char *argv[])
 		int land_detected_sub;
 		int commander_state_sub;
 		int cpuload_sub;
+    int mocap_rpm_command_sub;
 	} subs;
 
 	subs.cmd_sub = -1;
@@ -1372,7 +1376,7 @@ int sdlog2_thread_main(int argc, char *argv[])
 	subs.cpuload_sub = -1;
 
 	/* add new topics HERE */
-
+  subs.mocap_rpm_command_sub = -1;
 
 	for (unsigned i = 0; i < ORB_MULTI_MAX_INSTANCES; i++) {
 		subs.telemetry_subs[i] = -1;
@@ -2069,17 +2073,6 @@ int sdlog2_thread_main(int argc, char *argv[])
 				LOGBUFFER_WRITE_AND_COUNT(GVSP);
 			}
 
-			/* --- BATTERY --- */
-			if (copy_if_updated(ORB_ID(battery_status), &subs.battery_sub, &buf.battery)) {
-				log_msg.msg_type = LOG_BATT_MSG;
-				log_msg.body.log_BATT.voltage = buf.battery.voltage_v;
-				log_msg.body.log_BATT.voltage_filtered = buf.battery.voltage_filtered_v;
-				log_msg.body.log_BATT.current = buf.battery.current_a;
-				log_msg.body.log_BATT.current_filtered = buf.battery.current_filtered_a;
-				log_msg.body.log_BATT.discharged = buf.battery.discharged_mah;
-				LOGBUFFER_WRITE_AND_COUNT(BATT);
-			}
-
 			/* --- SYSTEM POWER RAILS --- */
 			if (copy_if_updated(ORB_ID(system_power), &subs.system_power_sub, &buf.system_power)) {
 				log_msg.msg_type = LOG_PWR_MSG;
@@ -2294,6 +2287,14 @@ int sdlog2_thread_main(int argc, char *argv[])
 			log_msg.body.log_LOAD.cpu_load = buf.cpuload.load;
 			LOGBUFFER_WRITE_AND_COUNT(LOAD);
 
+		}
+
+    /* --- MOCAP RPM COMMAND --- */
+		if (copy_if_updated(ORB_ID(mocap_rpm_command), &subs.mocap_rpm_command_sub, &buf.mocap_rpm_command)) {
+			log_msg.msg_type = LOG_RPMC_MSG;
+			log_msg.body.log_RPMC.ninputs = buf.mocap_rpm_command.ninputs;
+			memcpy(log_msg.body.log_RPMC.input, buf.mocap_rpm_command.input, sizeof(log_msg.body.log_RPMC.input));
+			LOGBUFFER_WRITE_AND_COUNT(RPMC);
 		}
 
 		pthread_mutex_lock(&logbuffer_mutex);
